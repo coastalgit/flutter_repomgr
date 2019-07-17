@@ -92,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       return new Text('Error');
                     if (snapshot.hasData){
                       Person p = snapshot.data;
-                      return Helpers.isNullOrEmpty(p.name)? Text('No body here'):Text((Helpers.isNullOrEmpty(_greetingMgr.greetingMessage)?'...':_greetingMgr.greetingMessage)+' '+p.name);
+                      return Helpers.isNullOrEmpty(p.name)? Text('No body here'):Text((Helpers.isNullOrEmpty(_greetingMgr.greetingMessage)?'...':_greetingMgr.greetingMessage)+' '+p.name+' aged '+p.age.toString());
                     }
                     return new Text('No data');
                 }

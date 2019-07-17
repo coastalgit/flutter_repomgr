@@ -1,5 +1,7 @@
 import 'package:flutter_repomgr/diskrepo_mixin.dart';
 
+/* EXPERIMENT: serialised/deserialised simple String in device storage */
+
 class GreetingManager with DiskRepoTasks {
 
   String greetingMessage;
@@ -11,8 +13,8 @@ class GreetingManager with DiskRepoTasks {
     return 'msg.txt';
   }
 
-  void saveMessage() {
-    writeData(this.greetingMessage);
+  void saveMessage() async{
+    await writeData(this.greetingMessage);
   }
 
   Future<String> loadMessage() {

@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_repomgr/greeting_manager.dart';
+import 'package:flutter_repomgr/list_page.dart';
+import 'package:provider/provider.dart';
+
 import 'package:flutter_repomgr/helper.dart';
+import 'package:flutter_repomgr/moor_db.dart';
 import 'package:flutter_repomgr/person_manager.dart';
 import 'package:flutter_repomgr/person_model.dart';
 
-import 'greeting_manager.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return Provider(
+      builder: (_) => AppDB().pessoaDao,
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: MyHomePage(title: 'Disk Repo Manager'),
       ),
-      home: MyHomePage(title: 'Disk Repo Manager'),
     );
   }
 }
@@ -139,9 +146,19 @@ class _MyHomePageState extends State<MyHomePage> {
             MaterialButton(
               shape: RoundedRectangleBorder(
                   side: BorderSide(width: 1), borderRadius: BorderRadius.all(Radius.circular(4))),
-              child: Text('Enter your name'),
+              child: Text('Enter your details'),
               onPressed: _doPersonEntry,
             ),
+            SizedBox(height: 20),
+            MaterialButton(
+              //shape: CircleBorder(side: BorderSide(width: 3, color: Colors.blueGrey)),
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(width: 2, color: Colors.blueGrey),
+                  borderRadius: BorderRadius.all(Radius.circular(4))),
+              child: Text('DB Test Page'),
+              onPressed: _loadDBTestPage,
+            ),
+
           ],
         ),
       ),
@@ -262,5 +279,18 @@ class _MyHomePageState extends State<MyHomePage> {
         );
       },
     );
+  }
+
+  void _loadDBTestPage() {
+
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) {
+            return ListPage();
+          },
+        ),
+      );
+
+
   }
 }

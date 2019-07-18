@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_repomgr/helper.dart';
+import 'package:flutter_repomgr/monitor_widget.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter_repomgr/moor_db.dart';
@@ -47,13 +49,25 @@ class _ListPageState extends State<ListPage> {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: MaterialButton(
-            shape:
-                RoundedRectangleBorder(side: BorderSide(width: 1), borderRadius: BorderRadius.all(Radius.circular(4))),
-            child: Text('Enter a person'),
-            onPressed: _doPersonEntry,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              MaterialButton(
+                shape:
+                    RoundedRectangleBorder(side: BorderSide(width: 1), borderRadius: BorderRadius.all(Radius.circular(4))),
+                child: Text('Enter a person'),
+                onPressed: _doPersonEntry,
+              ),
+              MaterialButton(
+                shape:
+                RoundedRectangleBorder(side: BorderSide(width: 2, color: Colors.red), borderRadius: BorderRadius.all(Radius.circular(4))),
+                child: Text('Delete all'),
+                onPressed: _doDeleteAll,
+              ),
+            ],
           ),
         ),
+        MonitorWidget(),
         Expanded(child: _buildPersonsList(context)),
       ],
     );
@@ -88,7 +102,17 @@ class _ListPageState extends State<ListPage> {
         final dao = Provider.of<PessoaDao>(context);
         dao.insertPerson(pessoa);
       });
+
+      // test StreamBuilder in MonitorWidget without a setState call
+      _fireDelayedEntry();
     }
+  }
+
+  void _fireDelayedEntry() async{
+    await Helpers.sleep(4);
+    Pessoa pessoa = Pessoa(name: 'Dummy', age: 1);
+    final dao = Provider.of<PessoaDao>(context);
+    dao.insertPerson(pessoa);
   }
 
   Future<Person> _showDialogPersonEntry(BuildContext context) async {
@@ -147,5 +171,10 @@ class _ListPageState extends State<ListPage> {
       title: Text(peep.name),
       trailing: Text(peep.age.toString()),
     );
+  }
+
+  void _doDeleteAll() {
+    final dao = Provider.of<PessoaDao>(context);
+    dao.deleteAllMessages();
   }
 }

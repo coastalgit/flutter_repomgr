@@ -37,6 +37,11 @@ class PessoaDao extends DatabaseAccessor<AppDB> with _$PessoaDaoMixin {
   Future deletePerson(Insertable<Pessoa> pessoa) => delete(persons).delete(pessoa);
   Future updatePerson(Insertable<Pessoa> pessoa) => update(persons).replace(pessoa);
 
+  Future deleteAllMessages() {
+    return (delete(persons)
+      ..where((p) => p.id.isBiggerThanValue(0))).go();
+  }
+
   // ability to monitor a stream of any changes via "watch"
   Stream<List<Pessoa>> watchAllPersons() => select(persons).watch();
 
